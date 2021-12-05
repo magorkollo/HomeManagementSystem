@@ -16,9 +16,68 @@ import matplotlib.pyplot as plt
 from flaskblog.motiondetector import MotionDetector
 import cv2 
 import numpy as np
+from socket import *
 
 outputFrame = None
 lock = threading.Lock()
+
+
+address = ( '192.168.1.5', 5000) 
+client_socket = socket(AF_INET, SOCK_DGRAM) 
+client_socket.settimeout(1) 
+ 
+control_name = [
+"temperature",
+"light",
+"lock",
+"askTemperature"
+]
+
+temperature_control = [
+"plus",
+"minus"
+]
+
+light_control = [
+"on",
+"off"
+]
+
+lock_control = [
+"open",
+"close"
+]
+
+def sendControl(controlName, controlValue):
+    data = controlName + " " + controlValue; 
+    client_socket.sendto(data.encode(), address)
+
+def requestData(controlName):
+    data = controlName + " Request"; 
+    client_socket.sendto(data.encode(), address)
+    try:
+        rec_data, addr = client_socket.recvfrom(2048)
+        return(rec_data)
+    except: 
+        pass
+
+def sendCommand(commandName, commandValue):
+    try:
+        address = ( '192.168.1.5', 5000) 
+        client_socket = socket(AF_INET, SOCK_DGRAM) 
+        client_socket.settimeout(1) 
+        sendControl(commandName, commandValue)
+    except:
+        pass
+
+def getValues(commandName):
+    try:
+        address = ( '192.168.1.5', 5000) 
+        client_socket = socket(AF_INET, SOCK_DGRAM) 
+        client_socket.settimeout(1) 
+        requestData(commandName)
+    except:
+        pass
 
 # testing only
 
@@ -86,7 +145,7 @@ def plotData(tempD):
     plt.plot(xAxis, yAxis)
     plt.ylabel("celsius")
     plt.xlabel("time")
-    plt.savefig("/home/magor/projects/flaskBlog/flaskblog/static/tempData.png")
+    plt.savefig("/home/pi/projects/CN/flaskBlog/flaskblog/static/tempData.png")
 
 
 
@@ -112,12 +171,14 @@ def temperature():
                 print("plus", tempVendor)
                 #tempD = Temperature.query.all()
                 #flash(tempD, 'success')
+                sendCommand(control_name[0],temperature_control[0])
                 return render_template('temperature.html', title = "Temperature", tempC = tempVendor, now=datetime.utcnow())
             elif  request.form.get('action2') == '-':
                 tempVendor = tempVendor - 1
                 print("minus", tempVendor)
                 #tempD = Temperature.query.all()
                 #flash(tempD, 'success')
+                sendCommand(control_name[0],temperature_control[1])
                 return render_template('temperature.html', title = "Temperature", tempC = tempVendor, now=datetime.utcnow())
             else:
                 pass # unknown
@@ -125,6 +186,48 @@ def temperature():
             return render_template('temperature.html', title = "Temperature", tempC = tempVendor, now=datetime.utcnow())
         
         return render_template("temperature.html", now=datetime.utcnow())
+
+
+@app.route("/lock", methods = ['GET', 'POST'])
+def lock():
+    if request.method == 'POST':
+        print("kurva anyad")
+        if request.form.get('lockON') == 'ON':
+            print("ON")
+            sendCommand(control_name[2],lock_control[0])
+            return render_template('lock.html', title = "Lock", now=datetime.utcnow())
+        elif  request.form.get('lockOFF') == 'OFF':
+            print("OFF")
+            sendCommand(control_name[2],lock_control[1])
+            return render_template('lock.html', title = "Lock", now=datetime.utcnow())
+        else:
+            pass # unknown
+    elif request.method == 'GET':
+        return render_template('lock.html', title = "Lock",  now=datetime.utcnow())
+    
+    return render_template("lock.html", now=datetime.utcnow())
+
+
+@app.route("/lamp", methods = ['GET', 'POST'])
+def lamp():
+    if request.method == 'POST':
+        if request.form.get('lampON') == 'on':
+            print("ON")
+            sendCommand(control_name[1],light_control[0])
+            return render_template('lamp.html', title = "Lamp", now=datetime.utcnow())
+        elif  request.form.get('lampOFF') == 'off':
+            print("OFF")
+            sendCommand(control_name[1],light_control[1])
+            return render_template('lamp.html', title = "Lamp", now=datetime.utcnow())
+        else:
+            pass # unknown
+    elif request.method == 'GET':
+        return render_template('lamp.html', title = "Lamp", now=datetime.utcnow())
+    
+    return render_template("lamp.html", now=datetime.utcnow())
+
+
+
 
 @app.route('/logout')
 def logout():

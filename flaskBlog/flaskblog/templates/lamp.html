@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Lamp system</h1>
+<!-- <h4>You can easily set and monitor your home's temperature!</h4> -->
+{% endblock content %}
+{% block content2 %}
+<div class= "center">
+  </div>
+    <div class ="container-temp">
+    <h2>Current lamp status:  </h2>
+    </div>
+    <form method = "POST" action ="">
+        <div class = "form-group buttonHolder">
+            <input type="submit" value="on" name="lampON" class="buttonLeft" />
+            <input type="submit" value="off" name="lampOFF" class="buttonRight"/>
+        </div>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br> 
+</div>
+{% endblock content2 %}
+
