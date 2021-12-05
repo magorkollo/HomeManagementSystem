@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Temperature modifier</h1>
+<!-- <h4>You can easily set and monitor your home's temperature!</h4> -->
+{% endblock content %}
+{% block content2 %}
+<div class= "center">
+  </div>
+    <div class ="container-temp">
+    <h2>Current temperature: {{tempC}} </h2>
+    </div>
+    <form method = "POST" action ="">
+        <div class = "form-group buttonHolder">
+            <input type="submit" value="-" name="action2" class="buttonLeft" />
+            <input type="submit" value="+" name="action1" class="buttonRight"/>
+        </div>
+    </form>
+    <br>
+    <img src="../static/tempData.png" alt="Plot with temperatures" width="80%" height="80%" class="center-img">
+    <br>
+    <br>
+    <br> 
+</div>
+{% endblock content2 %}
+
