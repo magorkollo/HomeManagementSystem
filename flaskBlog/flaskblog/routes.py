@@ -275,8 +275,8 @@ def account():
 #     def flasH
 
 def detect_motion():
-    #vs = VideoStream(src=0).start()
-    global outputFrame, lock
+    vs = VideoStream(src=0).start()
+    #global outputFrame, lock
     frameCount = 32
     #time.sleep(2.0)
 	# initialize the motion detector and the total number of frames
@@ -285,63 +285,76 @@ def detect_motion():
     total = 0
     while True:
         frame = vs.read()
+        print("mi a baj")
         #height = int(frame.shape[0])
         #frame = cv2.resize(frame, (400,250), interpolation = cv2.INTER_AREA)
         #print(frame)
-        if AttributeError:
-            print("why")
-            continue
-        else:
-            print("szopj le")
-            frame = imutils.resize(frame, width=400)
-            #frame = np.array(frame)
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            gray = cv2.GaussianBlur(frame, (7, 7), 0)
-            
-            timestamp = datetime.now()
-            cv2.putText(frame, timestamp.strftime(
-                "%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+        # if AttributeError:
+        #     print("why")
+        #     continue
+        # else:
+        frame = imutils.resize(frame, width=400)
+        #frame = np.array(frame)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(frame, (7, 7), 0)
+        
+        timestamp = datetime.now()
+        cv2.putText(frame, timestamp.strftime(
+            "%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
 
-            if total > frameCount:
-                motion = md.detect(gray)
-                if motion is not None:
-                    (thresh, (minX, minY, maxX, maxY)) = motion
-                    cv2.rectangle(frame, (minX, minY), (maxX, maxY),
-                        (0, 0, 255), 2)
-            
-            md.update(gray)
-            total += 1
-            
-            with lock:
-                outputFrame = frame.copy()
-            print("szopj le3")
+        if total > frameCount:
+            motion = md.detect(gray)
+            if motion is not None:
+                (thresh, (minX, minY, maxX, maxY)) = motion
+                cv2.rectangle(frame, (minX, minY), (maxX, maxY),
+                    (0, 0, 255), 2)
+        
+        md.update(gray)
+        total += 1
+        
+
+        outputFrame = frame.copy()
+        (flag, encodedImage) = cv2.imencode(".jpg",outputFrame )
+        if not flag:
             continue
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+			bytearray(encodedImage) + b'\r\n')
+
 	
 
-def gen_frames():
-	# grab global references to the output frame and lock variables
-	global outputFrame, lock
+# def gen_frames(vs):
+#     global outputFrame
 
-	# loop over frames from the output stream
-	while True:
-		# wait until the lock is acquired
-		with lock:
-			# check if the output frame is available, otherwise skip
-			# the iteration of the loop
-			if outputFrame is None:
-				continue
+#     while True:
+#         if outputFrame is None:
+#             continue
+#         (flag, encodedImage) = cv2.imencode(".jpg",outputFrame )
+#         if not flag:
+#             continue
+#         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+# 			bytearray(encodedImage) + b'\r\n')
+    
 
-			# encode the frame in JPEG format
-			(flag, encodedImage) = cv2.imencode(".jpg", outputFrame)
+# def gen_frames():
+# 	# grab global references to the output frame and lock variables
+# 	global outputFrame, lock
 
-			# ensure the frame was successfully encoded
-			if not flag:
-				continue
+# 	# loop over frames from the output stream
+# 	while True:
+#         if outputFrame is None:
+# 		    continue
 
-		# yield the output frame in the byte format
-		yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-			bytearray(encodedImage) + b'\r\n')
+# 			# encode the frame in JPEG format
+# 			(flag, encodedImage) = cv2.imencode(".jpg", outputFrame)
+
+# 			# ensure the frame was successfully encoded
+# 			if not flag:
+# 				continue
+
+# 		# yield the output frame in the byte format
+# 		yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+# 			bytearray(encodedImage) + b'\r\n')
   
 
 def gen_frames2():
@@ -358,12 +371,12 @@ def gen_frames2():
 
 @app.route('/video_feed')
 def video_feed():
-    #vs = VideoStream(src=0).start()
+    return redirect("http://localhost:5001", code=302)
     #time.sleep(2.0)
     #t = threading.Thread(target=gen_frames2)
     #t.daemon = True
     #t.start()
-    return Response(gen_frames(), 
+    return Response(detect_motion(), 
         mimetype = 'multipart/x-mixed-replace; boundary = frame')
 
 

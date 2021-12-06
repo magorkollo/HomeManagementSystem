@@ -1,0 +1,257 @@
+body {
+    background: #fafafa;
+    color: white;
+    margin-top: 5rem;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: whitesmoke;
+  }
+  
+  .bg-steel {
+    background-color: #5f788a;
+  }
+  
+  .site-header .navbar-nav .nav-link {
+    color: #cbd5db;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+  }
+  
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+  
+  .content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+  
+  .article-title {
+    color: #444444;
+  }
+  
+  a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+  }
+  
+  .article-content {
+    white-space: pre-line;
+  }
+  
+  .article-img {
+    height: 65px;
+    width: 65px;
+    margin-right: 16px;
+  }
+  
+  .article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3
+  }
+  
+  .article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .article-svg {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+  }
+  
+  .account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .account-heading {
+    font-size: 2.5rem;
+  }
+
+  .text-muted {
+    color: white;
+  }
+
+  .magor-text {
+    color: white;
+  }
+
+  .form-check-label{
+    color:rgb(78, 76, 76);
+  }
+
+  .form-control-label{
+    color: rgb(78, 76, 76);
+  }
+
+  .text-secondary{
+    color:white;
+  }
+
+  .form-group{
+    opacity: 0.9;
+  }
+
+  .mb-4 {
+    color: rgb(78, 76, 76);
+  }
+  
+  .center {
+    margin: auto;
+    width: 50%;
+    /* border: 3px solid green; */
+    padding: 10px;
+  }
+
+  .center-img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+
+
+ /* Navbar container */
+ .navbar2 {
+  overflow: hidden;
+  background-color: #000066;
+  font-family: Arial;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  color:lightgray;
+}
+
+/* Links inside the navbar */
+.navbar2 a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar-brand2:hover{
+  color:white;
+}
+
+/* The dropdown container */
+.dropdown2 {
+  float: left;
+  overflow: hidden;
+}
+
+.navbar-brand{
+ font-family: Arial;
+}
+
+/* Dropdown button */
+.dropdown2 .dropbtn2 {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: lightgray;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+.dropbtn2:hover{
+  color:white;
+}
+
+/* Add a red background color to navbar links on hover */
+.navbar2 a:hover, .dropdown2:hover .dropbtn2 {
+  border-color: rgb(0, 255, 179);
+  border-left-color: hotpink;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content2 {
+  display: none;
+  position: fixed;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content2 a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content2 a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown2:hover .dropdown-content2 {
+  display: block;
+} 
+
+
+.container-temp{
+  background-color: orangered;
+  opacity: 0.9;
+  text-align: center;
+  color: white;
+  font-size: x-large;
+}
+
+.buttonHolder{
+  text-align: center;
+}
+
+.pull-left{
+  width: 1px;
+  height: 1px;
+
+}
+
+.buttonLeft{
+  font-size: 50px;
+  background-color: lightblue;
+  border-radius: 70%;
+  /* size: 100px; */
+  height: 75px;
+  width: 75px;
+  padding-bottom: 5%;
+  /* color:blue; */
+}
+.buttonRight{
+  font-size: 50px;
+  border-radius: 70%;
+  background-color:lightcoral;
+  /* size:100px; */
+  height: 75px;
+  width: 75px;
+  /* color: red; */
+}
+.buttonRight:hover{
+  background-color:rgb(221, 99, 99);
+}
+
+.buttonLeft:hover{
+  background-color: rgb(78, 165, 194);
+}
