@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Lock / Open your door</h1>
+<!-- <h4>You can easily set and monitor your home's temperature!</h4> -->
+{% endblock content %}
+{% block content2 %}
+<div class= "center">
+  </div>
+    <div class ="container-temp">
+    <h2>Current lock status: {{tempC}} </h2>
+    </div>
+    <form method = "POST" action ="">
+        <div class = "form-group buttonHolder">
+            <input type="submit" value="ON" name="lockON" class="buttonLeft" />
+            <input type="submit" value="OFF" name="lockOFF" class="buttonRight"/>
+        </div>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br> 
+</div>
+{% endblock content2 %}
+
