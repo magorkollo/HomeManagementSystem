@@ -18,6 +18,7 @@ import cv2
 import numpy as np
 from socket import *
 
+
 outputFrame = None
 lock = threading.Lock()
 
@@ -190,39 +191,44 @@ def temperature():
 
 @app.route("/lock", methods = ['GET', 'POST'])
 def lock():
+    lockS = "Closed"
     if request.method == 'POST':
-        print("kurva anyad")
-        if request.form.get('lockON') == 'ON':
+        if request.form.get('lockON') == 'Open':
             print("ON")
+            lockS = "Opened"
             sendCommand(control_name[2],lock_control[0])
-            return render_template('lock.html', title = "Lock", now=datetime.utcnow())
-        elif  request.form.get('lockOFF') == 'OFF':
+            return render_template('lock.html', lockStatus = lockS, title = "Lock", now=datetime.utcnow())
+        elif  request.form.get('lockOFF') == 'Close':
             print("OFF")
+            lockS = "Closed"
             sendCommand(control_name[2],lock_control[1])
-            return render_template('lock.html', title = "Lock", now=datetime.utcnow())
+            return render_template('lock.html', lockStatus = lockS, title = "Lock", now=datetime.utcnow())
         else:
             pass # unknown
     elif request.method == 'GET':
-        return render_template('lock.html', title = "Lock",  now=datetime.utcnow())
+        return render_template('lock.html', lockStatus = lockS, title = "Lock",  now=datetime.utcnow())
     
     return render_template("lock.html", now=datetime.utcnow())
 
 
 @app.route("/lamp", methods = ['GET', 'POST'])
 def lamp():
+    lampS = "off"
     if request.method == 'POST':
         if request.form.get('lampON') == 'on':
             print("ON")
+            lampS = "on"
             sendCommand(control_name[1],light_control[0])
-            return render_template('lamp.html', title = "Lamp", now=datetime.utcnow())
+            return render_template('lamp.html', lampStatus = lampS, title = "Lamp", now=datetime.utcnow())
         elif  request.form.get('lampOFF') == 'off':
             print("OFF")
+            lampS = "off"
             sendCommand(control_name[1],light_control[1])
-            return render_template('lamp.html', title = "Lamp", now=datetime.utcnow())
+            return render_template('lamp.html', lampStatus = lampS, title = "Lamp", now=datetime.utcnow())
         else:
             pass # unknown
     elif request.method == 'GET':
-        return render_template('lamp.html', title = "Lamp", now=datetime.utcnow())
+        return render_template('lamp.html', lampStatus = lampS, title = "Lamp", now=datetime.utcnow())
     
     return render_template("lamp.html", now=datetime.utcnow())
 
@@ -371,12 +377,17 @@ def gen_frames2():
 
 @app.route('/video_feed')
 def video_feed():
-    return redirect("http://localhost:5001", code=302)
+    s = socket(AF_INET, SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    local_ip = s.getsockname()[0]
+    s.close()
+    ip = "http://" +local_ip + ":5001"
+    return redirect(ip, code=302)
     #time.sleep(2.0)
     #t = threading.Thread(target=gen_frames2)
     #t.daemon = True
     #t.start()
-    return Response(detect_motion(), 
-        mimetype = 'multipart/x-mixed-replace; boundary = frame')
+    # return Response(detect_motion(), 
+    #     mimetype = 'multipart/x-mixed-replace; boundary = frame')
 
 

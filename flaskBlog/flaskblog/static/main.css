@@ -255,3 +255,31 @@ body {
 .buttonLeft:hover{
   background-color: rgb(78, 165, 194);
 }
+
+
+.buttonLeft2{
+  font-size: 50px;
+  background-color: rgb(203, 230, 173);
+  border-radius: 70%;
+  /* size: 100px; */
+  height: 200px;
+  width: 200px;
+  padding-bottom: 5%;
+  /* color:blue; */
+}
+.buttonRight2{
+  font-size: 50px;
+  border-radius: 70%;
+  background-color:rgb(240, 182, 128);
+  /* size:100px; */
+  height: 200px;
+  width: 200px;
+  /* color: red; */
+}
+.buttonRight2:hover{
+  background-color:rgb(221, 99, 99);
+}
+
+.buttonLeft2:hover{
+  background-color: rgb(78, 165, 194);
+}
